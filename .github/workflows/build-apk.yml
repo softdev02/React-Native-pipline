@@ -29,6 +29,12 @@ jobs:
       - name: Prebuild the project
         run: expo prebuild --non-interactive
 
+      # Remove duplicate icon files in mipmap directories
+      - name: Remove Duplicate Resources
+        run: |
+          echo "Removing duplicate .png and .webp icon files"
+          find android/app/src/main/res/mipmap-*/ -type f \( -name "ic_launcher.png" -or -name "ic_launcher.webp" \) -exec rm -f {} \;
+        
       - name: Clean Gradle build
         run: cd android && ./gradlew clean
 
