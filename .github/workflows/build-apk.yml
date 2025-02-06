@@ -28,7 +28,10 @@ jobs:
 
       - name: Prebuild the project
         run: expo prebuild --non-interactive
-
+      # Remove the package attribute from AndroidManifest.xml
+      - name: Remove package attribute from AndroidManifest.xml
+        run: |
+          sed -i 's/package="com.sample.app"//' android/app/src/main/AndroidManifest.xml
       # Add this step to remove duplicate icons
       - name: Clean duplicate resources
         run: |
