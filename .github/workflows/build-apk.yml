@@ -16,13 +16,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: '18'  # Use the latest stable Node.js version for compatibility
 
       - name: Install dependencies
         run: npm install
 
+      - name: Install Expo CLI
+        run: npm install -g expo-cli
+
       - name: Prebuild the project
-        run: npx expo prebuild
+        run: expo prebuild
+
+      - name: Grant executable permissions to Gradle
+        run: chmod +x ./gradlew
 
       - name: Build APK
         run: ./gradlew assembleRelease --build-cache
