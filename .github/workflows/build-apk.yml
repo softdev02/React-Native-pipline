@@ -29,6 +29,11 @@ jobs:
       - name: Prebuild the project
         run: expo prebuild --non-interactive
 
+      # Add this step to remove duplicate icons
+      - name: Clean duplicate resources
+        run: |
+          find android/app/src/main/res -type f \( -iname "ic_launcher.png" -o -iname "ic_launcher_round.png" \) -delete
+
       - name: Grant executable permissions to Gradle
         run: chmod +x android/gradlew
 
