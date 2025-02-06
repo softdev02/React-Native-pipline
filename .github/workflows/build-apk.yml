@@ -23,32 +23,14 @@ jobs:
           npm install
           npm install web-streams-polyfill
 
-      - name: Install Expo CLI
-        run: npm install -g expo-cli
+      - name: Grant executable permissions to Gradle
+        run: chmod +x android/gradlew
 
-      - name: Prebuild the project
-        run: expo prebuild --non-interactive
-
-      # Remove the package attribute from AndroidManifest.xml
-      - name: Remove package attribute from AndroidManifest.xml
-        run: |
-          sed -i 's/package="com.sample.app"//' android/app/src/main/AndroidManifest.xml
-
-      # Add this step to remove duplicate icons
-      - name: Clean duplicate resources
-        run: |
-          find android/app/src/main/res -type f \( -iname "ic_launcher.png" -o -iname "ic_launcher_round.png" \) -delete
-
-      # Clean Gradle build
-      - name: Clean Gradle build
-        run: cd android && ./gradlew clean
-
-      # Build APK with stacktrace to see detailed errors
-      - name: Build APK with stacktrace
-        run: cd android && ./gradlew assembleDebug --stacktrace
+      - name: Build APK
+        run: cd android && gradlew assembleRelease --build-cache
 
       - name: Upload APK to GitHub Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: APK
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: android/app/build/outputs/apk/release/*.apk
