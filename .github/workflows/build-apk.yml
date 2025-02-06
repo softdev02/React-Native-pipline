@@ -23,17 +23,13 @@ jobs:
 
       - name: Install EAS CLI
         run: npm install --save-dev eas-cli
-
-      - name: Authenticate EAS
-        env:
-          EAS_TOKEN: ${{ secrets.EAS_TOKEN }}
-        run: npx eas login --token $EAS_TOKEN
-
+        
       - name: Build APK
         run: npx eas build --platform android --non-interactive
 
       - name: Upload APK to GitHub Artifacts
         uses: actions/upload-artifact@v4
+
         with:
           name: EAS-APK
-          path: **/*.apk
+          path: build/*
